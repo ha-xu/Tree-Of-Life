@@ -5,12 +5,29 @@
 <?import javafx.scene.layout.VBox?>
 
 <?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="treeoflife.FxmlController">
-  <padding>
-    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-  </padding>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.layout.AnchorPane?>
+<!--<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"-->
+<!--      fx:controller="treeoflife.FxmlController">-->
+<!--  <padding>-->
+<!--    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>-->
+<!--  </padding>-->
 
-  <Label fx:id="welcomeText"/>
-  <Button text="BYBY" onAction="#onHelloButtonClick"/>
-</VBox>
+<!--  <Label fx:id="welcomeText"/>-->
+<!--  <Button text="BYBY" onAction="#onHelloButtonClick"/>-->
+
+<!--  generate a circle-->
+<AnchorPane fx:id="anchorPane" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="treeoflife.FxmlController">
+
+  <StackPane AnchorPane.leftAnchor="370" AnchorPane.topAnchor="270">
+    <Circle fx:id="myCircle" radius="30" fill="gray"/>
+    <Label fx:id="myLabel" text="Hello" textFill="white"/>
+  </StackPane>
+
+
+  <Button text="Add a Circle" onAction="#addCircle"/>
+
+</AnchorPane>
+<!--</VBox>-->

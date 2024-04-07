@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class ListNodes {
 
     //arrayList of nodes
-    private ArrayList<Node> nodes;
+    private final ArrayList<Node> nodes;
 
     public ArrayList<Node> getNodes() {
         return nodes;
