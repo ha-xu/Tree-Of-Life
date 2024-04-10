@@ -20,10 +20,22 @@ public class FxmlController {
         anchorPane.setPrefSize(width, height);
     }
 
-    public void addCircle(){
-        Circle newCircle = new Circle(30);
-        Label label = new Label("Hello");
+    public void addCircle(String name){
+        int radius = 45;
+        Circle newCircle = new Circle(radius);
+        Label label = new Label(name);
+        //set label color
+        label.setStyle("-fx-text-fill: white");
+        //set label length
+        label.setPrefWidth(2*radius);
+        //set label alignment
+        label.setAlignment(javafx.geometry.Pos.CENTER);
+
+        //set circle color
+        newCircle.setStyle("-fx-fill: gray");
         StackPane stackPane = new StackPane();
+        stackPane.setLayoutX((double) Vue.WIDTH /2 - radius);
+        stackPane.setLayoutY((double) Vue.HEIGHT /2 - radius);
         stackPane.getChildren().add(newCircle);
         stackPane.getChildren().add(label);
         anchorPane.getChildren().add(stackPane);

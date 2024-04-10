@@ -1,0 +1,63 @@
+package treeoflife.modele;
+
+import java.util.ArrayList;
+
+public class TreeNode {
+//    source_node_id : Ancestor or source node identifier
+//    target_node_id : Descendant or target node identifier
+
+    private final int id;
+    private Node node;
+
+    private ArrayList<TreeNode> treeNodes;
+
+    private int getId() {
+        return id;
+    }
+
+    public ArrayList<TreeNode> getLinks() {
+        return treeNodes;
+    }
+
+    public TreeNode(int id) {
+        this.id = id;
+        this.treeNodes = new ArrayList<>();
+    }
+
+    public TreeNode(int id, Node node) {
+        this.id = id;
+        this.node = node;
+        this.treeNodes = new ArrayList<>();
+    }
+
+//    public void addChildLink(int id, Node node){
+//        treeNodes.add(new TreeNode(id, node));
+//    }
+
+    public void addChildTreeNode(TreeNode treeNode){
+        treeNodes.add(treeNode);
+    }
+
+    public void setNode(Node node){
+        this.node = node;
+    }
+
+    public Node getNode(){
+        return node;
+    }
+
+    public TreeNode getTreeNode(int id){
+        if(this.id == id)
+            return this;
+        else {
+            for (TreeNode treeNode : treeNodes) {
+                TreeNode res = treeNode.getTreeNode(id);
+                if(res != null)
+                    return res;
+            }
+        }
+        return null;
+    }
+
+
+}

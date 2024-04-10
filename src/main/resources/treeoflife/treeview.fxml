@@ -21,13 +21,13 @@
 <AnchorPane fx:id="anchorPane" xmlns:fx="http://javafx.com/fxml"
             fx:controller="treeoflife.FxmlController">
 
-  <StackPane AnchorPane.leftAnchor="370" AnchorPane.topAnchor="270">
-    <Circle fx:id="myCircle" radius="30" fill="gray"/>
-    <Label fx:id="myLabel" text="Hello" textFill="white"/>
-  </StackPane>
+<!--  <StackPane AnchorPane.leftAnchor="370" AnchorPane.topAnchor="270">-->
+<!--    <Circle fx:id="myCircle" radius="30" fill="gray"/>-->
+<!--    <Label fx:id="myLabel" text="Hello" textFill="white"/>-->
+<!--  </StackPane>-->
 
 
-  <Button text="Add a Circle" onAction="#addCircle"/>
+<!--  <Button text="Add a Circle" onAction="#addCircle"/>-->
 
 </AnchorPane>
 <!--</VBox>-->

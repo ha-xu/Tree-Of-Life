@@ -32,4 +32,12 @@ public class Node {
         this.confidence = confidence;
         this.phylesis = phylesis;
     }
+
+    public int getId() {
+        return node_id;
+    }
+
+    public String getName() {
+        return node_name;
+    }
 }
