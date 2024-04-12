@@ -28,7 +28,10 @@ public class Vue extends Application {
         Parent root = fxmlLoader.load();
 
         FxmlController fxmlController =  fxmlLoader.getController();
-        fxmlController.addCircle(tree.getRoot().getNode().getName());
+        fxmlController.addCircle(tree.getRoot().getNode().getName(),20,20);
+        fxmlController.addCircle(tree.getRoot().getLinks().getFirst().getNode().getName(),100,100);
+
+        fxmlController.addCircle(tree.getRoot().getLinks().getFirst().getLinks().get(1).getNode().getName(),200,200);
 
         Scene scene = new Scene(root, WIDTH, HEIGHT);
         stage.setTitle("Tree of life");
