@@ -22,7 +22,7 @@ public class FxmlController {
         anchorPane.setPrefSize(width, height);
     }
 
-    public void addCircle(String name,int x, int y){
+    public void addCircle(String name,double x, double y){
         int radius = 45;
         Circle newCircle = new Circle(radius);
         Label label = new Label(name);

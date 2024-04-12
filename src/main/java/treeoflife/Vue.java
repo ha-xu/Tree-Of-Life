@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import treeoflife.modele.Tree;
 import treeoflife.modele.ListNodes;
+import treeoflife.modele.TreeNode;
+
 
 import java.io.IOException;
 
@@ -28,9 +30,53 @@ public class Vue extends Application {
         Parent root = fxmlLoader.load();
 
         FxmlController fxmlController =  fxmlLoader.getController();
-        fxmlController.addCircle(tree.getRoot().getNode().getName(),20,20);
-        fxmlController.addCircle(tree.getRoot().getLinks().getFirst().getNode().getName(),100,100);
-        fxmlController.addCircle(tree.getRoot().getLinks().getFirst().getLinks().get(1).getNode().getName(),200,200);
+        fxmlController.addCircle(tree.getRoot().getNode().getName(),400,300);
+
+
+        /*fxmlController.addCircle(tree.getRoot().getLinks().get(0).getNode().getName(),100,100);
+        fxmlController.addCircle(tree.getRoot().getLinks().get(1).getNode().getName(),200,200);*/
+
+
+        /*fxmlController.addCircle(tree.getRoot().getLinks().getFirst().getLinks().get(1).getNode().getName(),300,300);*/
+
+        TreeNode rootNode = tree.getRoot();
+        int size = rootNode.getLinks().size();
+        double centerX = WIDTH / 2;
+        double centerY = HEIGHT / 2;
+        double radius = 200; // 设置圆的半径
+
+        for (int i = 0; i < size; i++) {
+            // 计算每个节点的角度和坐标
+            double angle = 2 * Math.PI * i / size; // 2π * 当前索引 / 总节点数
+            double x = centerX + radius * Math.cos(angle);
+            double y = centerY + radius * Math.sin(angle);
+            fxmlController.addCircle(rootNode.getLinks().get(i).getNode().getName(), x, y);
+
+            int size1 = rootNode.getLinks().get(i).getLinks().size();
+
+            double spanAngle = Math.PI * 2 / 3;  // 120度扇形
+            double startAngle = angle - spanAngle / 2;  // 让扇形从父节点的左侧开始
+            double subRadius = radius * 2.8;  // 增加父节点与子节点之间的距离
+
+            for(int a = 0;a < size1;a++){
+                double angle2 = startAngle + (double) a*2 / (size1 - 1); // 分布在半圆上，注意分母是 size1-1 以确保覆盖完整的半圆
+                double x2 =  x + subRadius * 0.5 * Math.cos(angle2); // 子节点的半径为父节点的一半
+                double y2 = y + subRadius * 0.5 * Math.sin(angle2);
+                fxmlController.addCircle(rootNode.getLinks().get(i).getLinks().get(a).getNode().getName(), x2, y2);
+
+                int size2 = rootNode.getLinks().get(i).getLinks().get(a).getLinks().size();
+                double subRadius1 = radius * 5.8;
+                for(int b=0;b<size2;b++){
+                    double angle3 = startAngle + (double) b*2 / (size2 - 1); // 分布在半圆上，注意分母是 size1-1 以确保覆盖完整的半圆
+                    double x3 =  x2 + subRadius1 * 0.5 * Math.cos(angle3); // 子节点的半径为父节点的一半
+                    double y3 = y2 + subRadius1 * 0.5 * Math.sin(angle3);
+                    fxmlController.addCircle(rootNode.getLinks().get(i).getLinks().get(a).getLinks().get(b).getNode().getName(), x3, y3);
+
+                }
+            }
+        }
+
+
 
 
 
