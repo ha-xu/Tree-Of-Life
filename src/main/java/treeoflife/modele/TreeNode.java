@@ -9,6 +9,8 @@ public class TreeNode {
     private final int id;
     private Node node;
 
+    private Position position;
+
     private ArrayList<TreeNode> treeNodes;
 
     private int getId() {
@@ -42,6 +44,13 @@ public class TreeNode {
         this.node = node;
     }
 
+    public void setPosition(Position position){
+        this.position = position;
+    }
+
+    public Position getPosition(){
+        return position;
+    }
     public Node getNode(){
         return node;
     }

@@ -18,8 +18,8 @@
 <!--  <Button text="BYBY" onAction="#onHelloButtonClick"/>-->
 
 <!--  generate a circle-->
-<AnchorPane fx:id="anchorPane" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="treeoflife.FxmlController">
+<!--<AnchorPane fx:id="anchorPane" xmlns:fx="http://javafx.com/fxml"-->
+<!--            fx:controller="treeoflife.FxmlController">-->
 
 <!--  <StackPane AnchorPane.leftAnchor="370" AnchorPane.topAnchor="270">-->
 <!--    <Circle fx:id="myCircle" radius="30" fill="gray"/>-->
@@ -29,5 +29,16 @@
 
 <!--  <Button text="Add a Circle" onAction="#addCircle"/>-->
 
-</AnchorPane>
+<!--</AnchorPane>-->
 <!--</VBox>-->
+
+
+<?import javafx.scene.control.ScrollPane?>
+<!--<ScrollPane >-->
+    <AnchorPane xmlns:fx="http://javafx.com/fxml"  fx:id="anchorPane" fx:controller="treeoflife.FxmlController">
+<!--        <StackPane AnchorPane.leftAnchor="370" AnchorPane.topAnchor="270">-->
+<!--            <Circle fx:id="myCircle" radius="30" fill="gray"/>-->
+<!--            <Label fx:id="myLabel" text="Hello" textFill="white"/>-->
+<!--        </StackPane>-->
+    </AnchorPane>
+<!--</ScrollPane>-->
