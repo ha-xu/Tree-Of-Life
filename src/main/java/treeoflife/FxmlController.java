@@ -1,12 +1,7 @@
 package treeoflife;
 
 import javafx.animation.*;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -19,14 +14,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
-import javafx.scene.transform.Scale;
 import javafx.util.Duration;
 import treeoflife.modele.Position;
 import treeoflife.modele.PositionDraw;
+import treeoflife.modele.Tree;
 import treeoflife.modele.TreeNode;
 
 import java.util.ArrayList;
-import java.util.Timer;
 
 public class FxmlController {
 
@@ -95,7 +89,7 @@ public class FxmlController {
         anchorPane.setPrefSize(width, height);
     }
 
-    public void addLine(double width,Position start, Position end){
+    public void addLine(double width,String color, Position start, Position end){
         //create a line
         javafx.scene.shape.Line line = new javafx.scene.shape.Line();
         //set line start position
@@ -105,7 +99,7 @@ public class FxmlController {
         line.setEndX(end.getX());
         line.setEndY(end.getY());
         //set line color
-        line.setStyle("-fx-stroke: black");
+        line.setStyle("-fx-stroke: " + color + ";");
 
         //set line width
         line.setStrokeWidth(width);
@@ -227,7 +221,16 @@ public class FxmlController {
                         DrawTreeNodeParentAndChild(childTreeNode);
                         focuseToPosition(childTreeNode.getPosition());
                     });
+                    //if checkbox is checked, highlight the node
                     CheckBox checkBox = new CheckBox();
+                    if(childTreeNode.isHighlight()){
+                        System.out.println(childTreeNode.isHighlight());
+                        checkBox.setSelected(true);}
+                    checkBox.setOnAction(event1 -> {
+                        childTreeNode.setHighlight(checkBox.isSelected());
+                        System.out.println(checkBox.isSelected());
+//                        DrawTreeNodeParentAndChild(treeNode);
+                    });
                     hbox.getChildren().add(checkBox);
                     hbox.getChildren().add(label);
 
@@ -238,7 +241,15 @@ public class FxmlController {
                 listScrollPane.setContent(listOfNodesVbox);
                 listOfNodes.getChildren().add(listScrollPane);
                 Button button = new Button("Visualize");
+
+                button.setOnMouseClicked(event1 -> {
+                    DrawTreeNodeParentAndChild(treeNode);
+                    focuseToPosition(treeNode.getPosition());
+                    System.out.println("Visualize");
+                });
+
                 listOfNodes.getChildren().add(button);
+
             }
 
 
@@ -295,8 +306,8 @@ public class FxmlController {
         TranslateTransition translateTransition = new TranslateTransition(Duration.millis(300), anchorPane);
 //        translateTransition.setFromX(anchorPane.getTranslateX());
 //        translateTransition.setFromY(anchorPane.getTranslateY());
-        translateTransition.setToX(Vue.WIDTH/2 - position.getX());
-        translateTransition.setToY(Vue.HEIGHT/2 - position.getY());
+        translateTransition.setToX(anchorPane.getWidth()/2 - position.getX());
+        translateTransition.setToY(anchorPane.getHeight()/2 - position.getY());
         translateTransition.play();
 
     }
@@ -335,10 +346,26 @@ public class FxmlController {
             }
         }
 
-        if(treeNode.getParent() != null){
-            addLine(1, treeNode.getPosition(), treeNode.getParent().getPosition());
-            addCircle(80,"gray" , treeNode.getParent().getNode().getName(), treeNode.getParent().getPosition(), treeNode.getParent().getLinks().size(), treeNode.getParent());
+        TreeNode parentTreeNode = treeNode.getParent();
+        if(parentTreeNode != null)
+            addLine(1,"black", treeNode.getPosition(), parentTreeNode.getPosition());
+        int level = 1;
+        while(parentTreeNode != null){
+            if(parentTreeNode.getParent()!= null){
+                addLine(1,"black", parentTreeNode.getPosition(), parentTreeNode.getParent().getPosition());
+
+            }
+            addCircle(50 + 5*level,"gray" , parentTreeNode.getNode().getName(), parentTreeNode.getPosition(), parentTreeNode.getLinks().size(), parentTreeNode);
+            parentTreeNode = parentTreeNode.getParent();
+            level++;
         }
+
+//        if(treeNode.getParent() != null){
+//
+//            addLine(1,"black", treeNode.getPosition(), treeNode.getParent().getPosition());
+//            addCircle(80,"gray" , treeNode.getParent().getNode().getName(), treeNode.getParent().getPosition(), treeNode.getParent().getLinks().size(), treeNode.getParent());
+//
+//        }
 
         int size = treeNode.getLinks().size();
         double radius = 40;
@@ -355,8 +382,13 @@ public class FxmlController {
         }
 
         for (TreeNode childTreeNode : treeNode.getLinks()) {
-            addLine(1, treeNode.getPosition(), childTreeNode.getPosition());
-            addCircle(radius,"gray" , childTreeNode.getNode().getName(), childTreeNode.getPosition(), childTreeNode.getLinks().size(), childTreeNode);
+            if(childTreeNode.isHighlight()) {
+                addLine(1,"yellow", treeNode.getPosition(), childTreeNode.getPosition());
+                addCircle(radius,"orange" , childTreeNode.getNode().getName(), childTreeNode.getPosition(), childTreeNode.getLinks().size(), childTreeNode);
+            }else {
+                addLine(1,"black", treeNode.getPosition(), childTreeNode.getPosition());
+                addCircle(radius,"gray" , childTreeNode.getNode().getName(), childTreeNode.getPosition(), childTreeNode.getLinks().size(), childTreeNode);
+            }
         }
 
         addCircle(50, "blue" , treeNode.getNode().getName(), treeNode.getPosition(), treeNode.getLinks().size(), treeNode);

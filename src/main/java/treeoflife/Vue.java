@@ -2,14 +2,12 @@ package treeoflife;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import treeoflife.modele.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class Vue extends Application {
 
@@ -32,7 +30,7 @@ public class Vue extends Application {
         TreeNode rootTreeNode = tree.getRoot();
 
         rootTreeNode.setPosition(new Position((double) WIDTH /2, HEIGHT/2));
-        rootTreeNode.setDisplay(true);
+        rootTreeNode.setHighlight(false);
 
         fxmlController.DrawTreeNodeParentAndChild(rootTreeNode);
 
