@@ -9,8 +9,11 @@ public class TreeNode {
     private final int id;
     private Node node;
 
+    private boolean display;
+
     private Position position;
 
+    private TreeNode parent;
     private ArrayList<TreeNode> treeNodes;
 
     private int getId() {
@@ -24,12 +27,20 @@ public class TreeNode {
     public TreeNode(int id) {
         this.id = id;
         this.treeNodes = new ArrayList<>();
+        this.display = false;
+    }
+    public TreeNode(int id,TreeNode parent) {
+        this.id = id;
+        this.treeNodes = new ArrayList<>();
+        this.display = false;
+        this.parent = parent;
     }
 
     public TreeNode(int id, Node node) {
         this.id = id;
         this.node = node;
         this.treeNodes = new ArrayList<>();
+        this.display = false;
     }
 
 //    public void addChildLink(int id, Node node){
@@ -55,6 +66,14 @@ public class TreeNode {
         return node;
     }
 
+    public TreeNode getParent() {
+        return parent;
+    }
+
+    public void setParent(TreeNode parent) {
+        this.parent = parent;
+    }
+
     public TreeNode getTreeNode(int id){
         if(this.id == id)
             return this;
@@ -66,6 +85,14 @@ public class TreeNode {
             }
         }
         return null;
+    }
+
+    public boolean isDisplay() {
+        return display;
+    }
+
+    public void setDisplay(boolean display) {
+        this.display = display;
     }
 
 

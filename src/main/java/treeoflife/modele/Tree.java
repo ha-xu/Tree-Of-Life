@@ -25,7 +25,7 @@ public class Tree {
                 int target_node_id = Integer.parseInt(values[1]);
 
                 TreeNode sourceNode = root.getTreeNode(source_node_id);
-                sourceNode.addChildTreeNode(new TreeNode(target_node_id));
+                sourceNode.addChildTreeNode(new TreeNode(target_node_id, sourceNode));
             }
         }
     }

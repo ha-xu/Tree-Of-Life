@@ -40,4 +40,73 @@ public class Node {
     public String getName() {
         return node_name;
     }
+
+    public int getChildNodes() {
+        return child_nodes;
+    }
+
+
+    public int getLeafNode() {
+        return leaf_node;
+    }
+
+    public String getLeafNodeString() {
+        if (leaf_node == 0) {
+            return "No";
+        } else {
+            return "Yes";
+        }
+    }
+
+    public int getTolorgLink() {
+        return tolorg_link;
+    }
+
+    public String getTolorgLinkString() {
+        if (tolorg_link == 0) {
+            return "No";
+        } else {
+            return "Yes";
+        }
+    }
+
+    public int getExtinct() {
+        return extinct;
+    }
+
+    public String getExtinctString() {
+        if (extinct == 0) {
+            return "No";
+        } else {
+            return "Yes";
+        }
+    }
+
+    public int getConfidence() {
+        return confidence;
+    }
+
+    public String getConfidenceString() {
+        if (confidence == 0) {
+            return "Confident";
+        } else if (confidence == 1) {
+            return "Problematic";
+        } else {
+            return "Unspecified";
+        }
+    }
+    public int getPhylesis() {
+        return phylesis;
+    }
+
+    public String getPhylesisString() {
+        if (phylesis == 0) {
+            return "Monophyletic";
+        } else if (phylesis == 1) {
+            return "Uncertain Monophyly";
+        } else {
+            return "Not Monophyletic";
+        }
+    }
+
 }

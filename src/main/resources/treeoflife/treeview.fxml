@@ -35,10 +35,12 @@
 
 <?import javafx.scene.control.ScrollPane?>
 <!--<ScrollPane >-->
-    <AnchorPane xmlns:fx="http://javafx.com/fxml"  fx:id="anchorPane" fx:controller="treeoflife.FxmlController">
+<StackPane xmlns:fx="http://javafx.com/fxml" fx:id="stackPane_OUT" fx:controller="treeoflife.FxmlController">
+    <AnchorPane xmlns:fx="http://javafx.com/fxml"  fx:id="anchorPane" >
 <!--        <StackPane AnchorPane.leftAnchor="370" AnchorPane.topAnchor="270">-->
 <!--            <Circle fx:id="myCircle" radius="30" fill="gray"/>-->
 <!--            <Label fx:id="myLabel" text="Hello" textFill="white"/>-->
 <!--        </StackPane>-->
     </AnchorPane>
+</StackPane>
 <!--</ScrollPane>-->
