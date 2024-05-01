@@ -44,6 +44,11 @@ public class Vue extends Application {
         stage.setTitle("Tree of life");
         stage.setScene(scene);
         stage.show();
+
+//        stage.setOnCloseRequest(e -> {
+//            System.out.println("Close");
+//            System.out.println(rootTreeNode.toString());
+//        });
     }
 
     public static void main(String[] args) {

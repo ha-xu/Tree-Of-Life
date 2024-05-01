@@ -1,8 +1,10 @@
 package treeoflife.modele;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class TreeNode {
+
+public class TreeNode{
 //    source_node_id : Ancestor or source node identifier
 //    target_node_id : Descendant or target node identifier
 
@@ -14,6 +16,9 @@ public class TreeNode {
     private Position position;
 
     private TreeNode parent;
+
+    private String description;
+    private String imageurl;
     private ArrayList<TreeNode> treeNodes;
 
     private int getId() {
@@ -72,6 +77,22 @@ public class TreeNode {
 
     public void setParent(TreeNode parent) {
         this.parent = parent;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getImageurl() {
+        return imageurl;
+    }
+
+    public void setImageurl(String imageurl) {
+        this.imageurl = imageurl;
     }
 
     public TreeNode getTreeNode(int id){

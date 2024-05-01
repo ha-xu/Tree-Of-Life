@@ -1,10 +1,8 @@
 package treeoflife.modele;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
-public class Tree {
+public class Tree  {
 
     private final TreeNode root = new TreeNode(1);
 
@@ -50,4 +48,24 @@ public class Tree {
         }
     }
 
+    //serialize tree
+
+
+    @Override
+    public String toString() {
+        return "root { " + root + " }";
+    }
+
+    //save to file
+    public void SaveTree(String filePath) {
+        //open file
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
+            //write root
+            bw.write(root.toString());
+            bw.newLine();
+
+        } catch (IOException e) {
+            System.out.println("Save tree failed: " + e.getMessage());
+        }
+    }
 }
