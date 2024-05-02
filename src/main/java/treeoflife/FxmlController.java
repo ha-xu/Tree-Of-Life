@@ -91,9 +91,7 @@ public class FxmlController {
 
         listOfNodes.setEffect(dropShadow);
 
-        listOfNodes.setOnMouseEntered(event -> {
-            canZoom = false;
-        });
+        listOfNodes.setOnMouseEntered(event -> canZoom = false);
 
         listOfNodes.setOnMouseExited(event -> {
             canZoom = true;
@@ -573,6 +571,25 @@ public class FxmlController {
             focusIn(scrollEvent);
         else
             focusOut(scrollEvent);
+    }
+
+    //size changed
+    public void sizeChanged(double width, double height){
+        setAnchorPaneSize(width, height);
+
+        focuseToPosition(currentTreeNode.getPosition());
+
+        listOfNodes.setTranslateX(width/2 - listOfNodes.getMaxWidth()/2 -10);
+        listOfNodes.setTranslateY(height/2 - listOfNodes.getMaxHeight()/2 -10);
+
+        detailBox.setTranslateX(width/2 - detailBox.getMaxWidth()/2 -10);
+        detailBox.setTranslateY(0-height/2 + detailBox.getMaxHeight()/2 +10);
+
+        toolsBox.setTranslateX(0-width/2 + toolsBox.getMaxWidth()/2 +10);
+        toolsBox.setTranslateY(height/2 - toolsBox.getMaxHeight()/2 -10);
+
+        searchBox.setTranslateX(0-width/2 + searchBox.getMaxWidth()/2 +10);
+        searchBox.setTranslateY(0-height/2 + searchBox.getMaxHeight()/2 +10);
     }
 
 

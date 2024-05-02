@@ -38,10 +38,15 @@ public class Vue extends Application {
 
         root.setOnScroll(fxmlController::scroll);
 
+        //when window size changed, redraw the tree
         Scene scene = new Scene(root, WIDTH, HEIGHT);
         stage.setTitle("Tree of life");
         stage.setScene(scene);
         stage.show();
+
+        scene.widthProperty().addListener((observable, oldValue, newValue) -> {
+            fxmlController.sizeChanged(scene.getWidth(),scene.getHeight());
+        });
 
     }
 
