@@ -163,13 +163,20 @@ public class FxmlController {
         searchField.setPrefWidth(150);
         Button searchButton = new Button("Search");
         searchButton.setOnMouseClicked(event -> {
-            System.out.println("Search");
             String searchName = searchField.getText();
             TreeNode searchNode = rootTreeNode.getTreeNodeByName(searchName);
             if(searchNode != null){
                 currentTreeNode = searchNode;
                 DrawTreeNodeParentAndChild(searchNode);
                 focuseToPosition(searchNode.getPosition());
+            }else{
+                System.out.println("Node not found");
+                //show alert
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Information Dialog");
+                alert.setHeaderText(null);
+                alert.setContentText("Node not found");
+                alert.showAndWait();
             }
         });
         searchBox.getChildren().add(searchField);
