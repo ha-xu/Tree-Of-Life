@@ -1,6 +1,10 @@
 package treeoflife.modele;
 
+import treeoflife.Vue;
+
 import java.io.*;
+import java.util.ArrayList;
+
 
 public class Tree  {
 
@@ -48,7 +52,27 @@ public class Tree  {
         }
     }
 
-    //serialize tree
+    //generate positions for each node use recursive
+    public void GeneratePositions() {
+        root.setPosition(new Position((double) Vue.WIDTH /2, Vue.HEIGHT/2));
+        GenratePosRec(root);
+    }
+
+    public void GenratePosRec(TreeNode treeNode){
+        if(!treeNode.getLinks().isEmpty()){
+            ArrayList<Position> positions;
+            if(treeNode.getParent() == null){
+                positions = PositionDraw.GetAroundPositions(treeNode.getPosition(), 200, treeNode.getLinks().size());
+            }else{
+                positions = PositionDraw.GetAroundPositions(treeNode.getPosition(), treeNode.getParent().getPosition(), 200, treeNode.getLinks().size());
+            }
+
+            for(int i = 0; i < treeNode.getLinks().size(); i++){
+                treeNode.getLinks().get(i).setPosition(positions.get(i));
+                GenratePosRec(treeNode.getLinks().get(i));
+            }
+        }
+    }
 
 
     @Override

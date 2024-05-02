@@ -117,4 +117,19 @@ public class TreeNode{
     }
 
 
+    public TreeNode getTreeNodeByName(String name){
+        if(this.node == null)
+            return null;
+        if(this.node.getName().equals(name))
+            return this;
+        else {
+            for (TreeNode treeNode : treeNodes) {
+                TreeNode res = treeNode.getTreeNodeByName(name);
+                if(res != null)
+                    return res;
+            }
+        }
+        return null;
+    }
+
 }

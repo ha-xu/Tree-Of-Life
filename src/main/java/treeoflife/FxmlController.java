@@ -28,6 +28,7 @@ import java.util.ArrayList;
 
 public class FxmlController {
 
+    private TreeNode rootTreeNode;
     private TreeNode currentTreeNode;
 
     @FXML
@@ -42,8 +43,18 @@ public class FxmlController {
     private VBox detailBox;
     private VBox toolsBox;
 
+    private HBox searchBox;
+
     private boolean canZoom = true;
 
+    public void SetRootTreeNode(TreeNode rootTreeNode){
+        this.rootTreeNode = rootTreeNode;
+        this.currentTreeNode = rootTreeNode;
+    }
+
+    //initialize the fxml controller
+    //initialize all the components in the stackPane
+    //UI components include: anchorPane, popup, listOfNodes, detailBox, toolsBox, searchBox
     public void initialize() {
         System.out.println("FxmlController initialized");
         //Je met la taille de l'anchorPane à la taille de la fenêtre
@@ -100,12 +111,12 @@ public class FxmlController {
         //initialize tools box pour afficher les outils
         toolsBox = new VBox();
         toolsBox.setStyle("-fx-background-color: white;-fx-background-radius: 8px;-fx-opacity: 0.9;-fx-border-radius: 8px;-fx-border-color: black;-fx-border-width: 1px;-fx-padding: 10px;");
-        toolsBox.setMaxSize(120,260);
+        toolsBox.setMaxSize(120,100);
         toolsBox.setTranslateX(0-Vue.WIDTH/2 + toolsBox.getMaxWidth()/2 +10);
         toolsBox.setTranslateY(Vue.HEIGHT/2 - toolsBox.getMaxHeight()/2 -10);
 
         toolsBox.setEffect(dropShadow);
-        toolsBox.setAlignment(Pos.TOP_CENTER);
+        toolsBox.setAlignment(Pos.TOP_LEFT);
 
         //Zoom buttons
         Button zoomInButton = new Button("Zoom In");
@@ -129,7 +140,41 @@ public class FxmlController {
             anchorPane.getChildren().remove(popup);
         });
         toolsBox.getChildren().add(clearButton);
+
+        //return to root button
+        Button returnToRootButton = new Button("To Root");
+        returnToRootButton.setOnMouseClicked(event -> {
+            currentTreeNode = rootTreeNode;
+            DrawTreeNodeParentAndChild(rootTreeNode);
+            focuseToPosition(currentTreeNode.getPosition());
+        });
+        toolsBox.getChildren().add(returnToRootButton);
         stackPane_OUT.getChildren().add(toolsBox);
+
+        //search box
+        searchBox = new HBox();
+        searchBox.setStyle("-fx-background-color: white;-fx-background-radius: 8px;-fx-opacity: 0.9;-fx-border-radius: 8px;-fx-border-color: black;-fx-border-width: 1px;-fx-padding: 10px;");
+        searchBox.setMaxSize(240,50);
+        searchBox.setTranslateX(0-Vue.WIDTH/2 + searchBox.getMaxWidth()/2 +10);
+        searchBox.setTranslateY(0-Vue.HEIGHT/2 + searchBox.getMaxHeight()/2 +10);
+        searchBox.setEffect(dropShadow);
+        TextField searchField = new TextField();
+        searchField.setPromptText("Search Node");
+        searchField.setPrefWidth(150);
+        Button searchButton = new Button("Search");
+        searchButton.setOnMouseClicked(event -> {
+            System.out.println("Search");
+            String searchName = searchField.getText();
+            TreeNode searchNode = rootTreeNode.getTreeNodeByName(searchName);
+            if(searchNode != null){
+                currentTreeNode = searchNode;
+                DrawTreeNodeParentAndChild(searchNode);
+                focuseToPosition(searchNode.getPosition());
+            }
+        });
+        searchBox.getChildren().add(searchField);
+        searchBox.getChildren().add(searchButton);
+        stackPane_OUT.getChildren().add(searchBox);
 
     }
 
@@ -156,12 +201,6 @@ public class FxmlController {
         //add line to anchorPane
         anchorPane.getChildren().add(line);
 
-//        line.setOpacity(0);
-//
-//        FadeTransition fadeTransition = new FadeTransition(Duration.millis(2000), line);
-//        fadeTransition.setFromValue(0);
-//        fadeTransition.setToValue(1);
-//        fadeTransition.play();
     }
 
     public void addCircle(double radius, String color, String name, Position position, int childCount, TreeNode treeNode){
@@ -207,14 +246,9 @@ public class FxmlController {
         stackPane.setOpacity(1);
 
 
-//        FadeTransition fadeTransition = new FadeTransition(Duration.millis(1000), stackPane);
-//        fadeTransition.setFromValue(0);
-//        fadeTransition.setToValue(1);
-//        fadeTransition.play();
-
-
         //add click event to circle
         stackPane.setOnMouseClicked(event -> {
+            //when click the circle, show the popup
             System.out.println("Clicked position" + event.getX() + " " + event.getY());
             anchorPane.getChildren().remove(popup);
             popup.setLayoutX(treeNode.getPosition().getX() - 50);
@@ -239,9 +273,9 @@ public class FxmlController {
 
             anchorPane.getChildren().add(popup);
 
-//            VBox listOfNodesVbox = new VBox();
+            //show the list of child nodes-----------------------------------------------------------------
+            //update the list of child nodes
             listOfNodes.getChildren().clear();
-
             listOfNodes.getChildren().add(new Label("Child nodes of " + treeNode.getNode().getName()));
 
             if(treeNode.getLinks().isEmpty()){
@@ -300,12 +334,11 @@ public class FxmlController {
 
             }
 
-
-
             stackPane_OUT.getChildren().remove(listOfNodes);
             stackPane_OUT.getChildren().add(listOfNodes);
             stackPane_OUT.getChildren().remove(detailBox);
             stackPane_OUT.getChildren().add(detailBox);
+            //update the detail box--------------------------------------------------------------
             detailBox.getChildren().clear();
             //add label to detail box
             Label label = new Label(treeNode.getNode().getName());
@@ -355,8 +388,8 @@ public class FxmlController {
 
             //add upload image button
             Button uploadButton = new Button("Upload Image");
-            ImageView finalImageView = imageView;
             uploadButton.setOnMouseClicked(event1 -> {
+                //open file chooser to upload image from local
                 System.out.println("Upload Image");
                 FileChooser fileChooser = new FileChooser();
                 fileChooser.setTitle("Open Resource File");
@@ -366,28 +399,20 @@ public class FxmlController {
                 File selectedFile = fileChooser.showOpenDialog(null);
 
 
-                // 处理用户选择的文件
+                //if file is chosen, set the image to the image view
                 if (selectedFile != null) {
-                    System.out.println("已选择文件：" + selectedFile.getAbsolutePath());
-                    // 在这里可以进一步处理所选文件，比如读取内容或进行其他操作
+                    System.out.println("File chosen：" + selectedFile.getAbsolutePath());
                     Image newImage = new Image("file:" + selectedFile.getAbsolutePath());
                     treeNode.setImageurl(selectedFile.getAbsolutePath());
                     imageView.setImage(newImage);
 
                 } else {
-                    System.out.println("未选择文件");
+                    System.out.println("failed to upload image");
                 }
             });
 
             detailBox.getChildren().add(uploadButton);
 
-//            //add button to save description
-//            Button saveButton = new Button("Save ");
-//            saveButton.setOnMouseClicked(event1 -> {
-//                treeNode.setDescription(descriptionField.getText());
-//            });
-//
-//            detailBox.getChildren().add(saveButton);
         });
 
         stackPane.setOnScroll(event -> {
@@ -399,7 +424,8 @@ public class FxmlController {
 
     }
 
-    public void zoomIn(ScrollEvent e){
+    //focus to child node
+    public void focusIn(ScrollEvent e){
         if(canZoom) {
             if (currentTreeNode == null)
                 return;
@@ -409,7 +435,8 @@ public class FxmlController {
 
     }
 
-    public void zoomOut(ScrollEvent e){
+    //focus to parent node
+    public void focusOut(ScrollEvent e){
         if(canZoom) {
             if (currentTreeNode == null)
                 return;
@@ -424,6 +451,7 @@ public class FxmlController {
         }
     }
 
+    //Zoom the window in
     public void ZoomWindowIn(){
         //Zoom with transition
         ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(300), anchorPane);
@@ -432,6 +460,7 @@ public class FxmlController {
         scaleTransition.play();
     }
 
+    //Zoom the window out
     public void ZoomWindowOut(){
         //Zoom with transition
         ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(300), anchorPane);
@@ -448,23 +477,21 @@ public class FxmlController {
         anchorPane.getChildren().clear();
     }
 
+    //focus the anchorPane to the position
     private void focuseToPosition(Position position){
 
         TranslateTransition translateTransition = new TranslateTransition(Duration.millis(300), anchorPane);
-//        translateTransition.setFromX(anchorPane.getTranslateX());
-//        translateTransition.setFromY(anchorPane.getTranslateY());
         translateTransition.setToX(anchorPane.getWidth()/2 - position.getX());
         translateTransition.setToY(anchorPane.getHeight()/2 - position.getY());
         translateTransition.play();
 
     }
 
-//    private void setTreeNodeChildPositions
-
     public void pressed(MouseEvent e){
         startPostion = new Position(e.getX(), e.getY());
     }
 
+    //drag the anchorPane to move the window
     public void dragged(MouseEvent e){
         currentPosition = new Position(e.getX(), e.getY());
         double deltaX = currentPosition.getX() - startPostion.getX();
@@ -475,23 +502,11 @@ public class FxmlController {
         System.out.println("mouse position: " + e.getX() + " " + e.getY());
     }
 
-
+    //draw the tree node with parent and child nodes
     public void DrawTreeNodeParentAndChild(TreeNode treeNode){
         if(treeNode == null)
             return;
         clear();
-        if(!treeNode.getLinks().isEmpty()){
-            ArrayList<Position> positions;
-            if(treeNode.getParent() == null){
-                positions = PositionDraw.GetAroundPositions(treeNode.getPosition(), 200, treeNode.getLinks().size());
-            }else{
-                positions = PositionDraw.GetAroundPositions(treeNode.getPosition(), treeNode.getParent().getPosition(), 200, treeNode.getLinks().size());
-            }
-
-            for(int i = 0; i < treeNode.getLinks().size(); i++){
-                treeNode.getLinks().get(i).setPosition(positions.get(i));
-            }
-        }
 
         //draw parent node
         TreeNode parentTreeNode = treeNode.getParent();
@@ -548,9 +563,9 @@ public class FxmlController {
 
     public void scroll(ScrollEvent scrollEvent) {
         if(scrollEvent.getDeltaY() > 0)
-            zoomIn(scrollEvent);
+            focusIn(scrollEvent);
         else
-            zoomOut(scrollEvent);
+            focusOut(scrollEvent);
     }
 
 

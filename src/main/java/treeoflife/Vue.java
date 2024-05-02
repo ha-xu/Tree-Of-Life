@@ -29,14 +29,12 @@ public class Vue extends Application {
 
         TreeNode rootTreeNode = tree.getRoot();
 
-        rootTreeNode.setPosition(new Position((double) WIDTH /2, HEIGHT/2));
-        rootTreeNode.setHighlight(false);
+        //generate positions for each node
+        tree.GeneratePositions();
 
+        fxmlController.SetRootTreeNode(rootTreeNode);
         fxmlController.DrawTreeNodeParentAndChild(rootTreeNode);
 
-
-//        root.setOnMousePressed(fxmlController::pressed);
-//        root.setOnMouseDragged(fxmlController::dragged);
 
         root.setOnScroll(fxmlController::scroll);
 
@@ -45,10 +43,6 @@ public class Vue extends Application {
         stage.setScene(scene);
         stage.show();
 
-//        stage.setOnCloseRequest(e -> {
-//            System.out.println("Close");
-//            System.out.println(rootTreeNode.toString());
-//        });
     }
 
     public static void main(String[] args) {
